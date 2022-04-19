@@ -1,11 +1,9 @@
 package locations;
 
-import lombok.*;
+import lombok.Data;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Location {
+public class LocationDto {
 
     private Long id;
 
@@ -14,5 +12,4 @@ public class Location {
     private double lat;
 
     private double lon;
-
 }
