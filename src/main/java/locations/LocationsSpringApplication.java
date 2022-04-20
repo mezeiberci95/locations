@@ -1,5 +1,6 @@
 package locations;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +16,13 @@ public class LocationsSpringApplication {
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
+	}
+
+	// ezzel lesz megfelelő JSON formátumban kiírva a Problem példány
+	@Bean
+	public ObjectMapper objectMapper() {
+		return new ObjectMapper()
+				.findAndRegisterModules();
 	}
 
 }
