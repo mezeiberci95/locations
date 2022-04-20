@@ -14,10 +14,10 @@ public class LocationIT {
     @Autowired
     LocationsController locationsController;
 
-    @Test
+    /*@Test
     void getLocations() {
         List<LocationDto> locationList = locationsController.getLocations();
 
         assertThat(locationList).isNotEmpty();
-    }
+    }*/
 }
