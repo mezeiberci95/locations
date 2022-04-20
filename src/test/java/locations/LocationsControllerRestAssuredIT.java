@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.with;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest
@@ -55,5 +56,15 @@ public class LocationsControllerRestAssuredIT {
                 .body("[0].name", equalTo("Location1"))
                 .body("[0].lat", equalTo(1f))
                 .body("[0].lon", equalTo(1f));
+    }
+
+    // séma alapján validálja a responseban kapott objektumot
+    @Test
+    void validate() {
+        with()
+                .body(new CreateLocationCommand("Location1", 1, 1))
+                .post("/api/locations")
+                .then()
+                .body(matchesJsonSchemaInClasspath("location-dto.json"));
     }
 }
