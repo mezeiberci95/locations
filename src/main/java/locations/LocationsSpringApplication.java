@@ -18,11 +18,4 @@ public class LocationsSpringApplication {
 		return new ModelMapper();
 	}
 
-	// ezzel lesz megfelelő JSON formátumban kiírva a Problem példány
-	@Bean
-	public ObjectMapper objectMapper() {
-		return new ObjectMapper()
-				.findAndRegisterModules();
-	}
-
 }

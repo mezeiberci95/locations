@@ -37,7 +37,7 @@ public class LocationsService {
     public LocationDto findLocationById(long id) {
         return modelMapper.map(locationList.stream()
                         .filter(e -> e.getId() == id).findAny()
-                        .orElseThrow(() -> new IllegalArgumentException("Location not found: " + id)),
+                        .orElseThrow(() -> new LocationNotFoundException(id)),
                 LocationDto.class);
     }
 
@@ -51,7 +51,7 @@ public class LocationsService {
     public LocationDto updateLocation(long id, UpdateLocationCommand command) {
         Location location = locationList.stream()
                 .filter(e -> e.getId() == id)
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("Location not found: " + id));
+                .findFirst().orElseThrow(() -> new LocationNotFoundException(id));
         location.setName(command.getName());
         location.setLat(command.getLat());
         location.setLon(command.getLon());
@@ -61,7 +61,7 @@ public class LocationsService {
     public void deleteLocation(long id) {
         Location location = locationList.stream()
                 .filter(e -> e.getId() == id)
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("Location not found: " + id));
+                .findFirst().orElseThrow(() -> new LocationNotFoundException(id));
         locationList.remove(location);
     }
 
