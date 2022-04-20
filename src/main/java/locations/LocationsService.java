@@ -65,4 +65,10 @@ public class LocationsService {
         locationList.remove(location);
     }
 
+    // ahhoz kell, hogy a tesztek futtatásakor ne legyen Location
+    public void deleteLocations(){
+        idGenerator = new AtomicLong();
+        locationList.clear();
+    }
+
 }
