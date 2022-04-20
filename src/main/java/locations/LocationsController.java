@@ -1,5 +1,8 @@
 package locations;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/locations")
+@Tag(name = "Operations on locations in LocationController")
 public class LocationsController {
 
     private LocationsService locationsService;
@@ -34,6 +38,8 @@ public class LocationsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Creates a new location")
+    @ApiResponse(responseCode = "201", description = "Location has been created")
     public LocationDto createLocation(@RequestBody CreateLocationCommand command) {
         return locationsService.createLocation(command);
     }
