@@ -6,13 +6,17 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
+import org.zalando.problem.spring.web.advice.validation.ConstraintViolationAdviceTrait;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/locations")
@@ -26,8 +30,8 @@ public class LocationsController {
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public LocationsDto getLocations(@RequestParam Optional<String> name) {
-        return new LocationsDto(locationsService.getLocations(name));
+    public List<LocationDto> getLocations(@RequestParam Optional<String> name) {
+        return locationsService.getLocations(name);
     }
 
     // így is lehet állítani, hogy milyen státusszal menjen vissza, de van erre szabvány !!
@@ -40,7 +44,7 @@ public class LocationsController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Creates a new location")
     @ApiResponse(responseCode = "201", description = "Location has been created")
-    public LocationDto createLocation(@RequestBody CreateLocationCommand command) {
+    public LocationDto createLocation(@Valid @RequestBody CreateLocationCommand command) {
         return locationsService.createLocation(command);
     }
 
@@ -55,4 +59,26 @@ public class LocationsController {
         locationsService.deleteLocation(id);
     }
 
+
+    // ezt globálisan érdemes implementálni
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Problem> handleValidException(MethodArgumentNotValidException exception) {
+        List<Violation> violations =
+                exception.getBindingResult().getFieldErrors().stream()
+                        .map(fe -> new Violation(fe.getField(), fe.getDefaultMessage()))
+                        .collect(Collectors.toList());
+
+        Problem problem =
+                Problem.builder()
+                        .withType(URI.create("locations/not-valid"))
+                        .withTitle("Validation error")
+                        .withStatus(Status.BAD_REQUEST)
+                        .withDetail(exception.getMessage())
+                        .with("violations", violations)
+                        .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(problem);
+    }
 }
