@@ -25,13 +25,13 @@ public class LocationsController {
         this.locationsService = locationsService;
     }
 
-    @GetMapping
-    public List<LocationDto> getLocations(@RequestParam Optional<String> name) {
-        return locationsService.getLocations(name);
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public LocationsDto getLocations(@RequestParam Optional<String> name) {
+        return new LocationsDto(locationsService.getLocations(name));
     }
 
     // így is lehet állítani, hogy milyen státusszal menjen vissza, de van erre szabvány !!
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public LocationDto findLocationById(@PathVariable("id") long id) {
         return locationsService.findLocationById(id);
     }

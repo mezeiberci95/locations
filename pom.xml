@@ -91,6 +91,12 @@
 			<version>${rest-assured.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- java to xm és xml to java konvertáláshoz -->
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+		</dependency>
     </dependencies>
 
 	<build>

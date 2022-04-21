@@ -5,18 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @XmlRootElement
-public class LocationDto {
+public class LocationsDto {
 
-    private Long id;
+    private List<LocationDto> locationDtoList;
 
-    private String name;
-
-    private double lat;
-
-    private double lon;
 }
