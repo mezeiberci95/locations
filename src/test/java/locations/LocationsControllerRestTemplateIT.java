@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
@@ -18,19 +19,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(statements = "delete from locations")
 public class LocationsControllerRestTemplateIT {
-
 
     @Autowired
     TestRestTemplate template; // ezzel lehet kéréseket kiadni
 
-    @Autowired
-    LocationsService locationsService;
-
     //@Test
     @RepeatedTest(2)
     void testListLocations() {
-        locationsService.deleteLocations();
         // ezzel létrejön egy Location
         LocationDto locationDto =
                 template.postForObject("/api/locations", new CreateLocationCommand("Location1", 1, 1), LocationDto.class);
