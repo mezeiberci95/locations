@@ -18,7 +18,7 @@
 		<java.version>17</java.version>
 		<problem.version>0.26.0</problem.version>
 		<rest-assured.version>5.0.1</rest-assured.version>
-		<tests.skip>false</tests.skip>
+		<tests.skip>true</tests.skip>
 	</properties>
 
 	<dependencies>
